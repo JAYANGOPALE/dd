@@ -1,0 +1,215 @@
+# fibbonaccci series 0 1 1 2  3 5 8 ..... 
+
+number = int(input("Enter N: "))
+first_number = 0 
+second_number = 1 
+print ("Non-Recursive Fibonacci Series: ")
+for i in range (number):
+    print (first_number, end =" ")
+    next_number = first_number + second_number  
+    first_number = second_number  
+    second_number = next_number
+
+def fibonacci(number):
+    if number == 0:
+        return 0
+    elif number == 1:
+        return 1
+    else:
+        return fibonacci(number-1) + fibonacci(number-2)
+
+number = int(input("\nEnter N: "))
+print ("Recursive Fibonacci Series: ")
+for i in range(number):
+    print(fibonacci(i), end=" ")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+Write a program to implement Huffman
+Encoding using a greedy strategy
+'''
+
+import heapq # liblary 
+def huffman_encoding(characters, frequencies):
+    heap = [] # array
+    for i in range (len (characters)):
+        heapq.heappush(heap, (frequencies[i],characters[i]))
+    while len(heap) > 1:
+        f1 , left = heapq.heappop(heap)
+        f2 , right = heapq.heappop(heap)
+        heapq.heappush(heap, (f1+f2,(left,right)))
+    return heap[0][1]
+
+def generate_codes(node, code = ""):
+    if isinstance(node, str):
+        print (node, ":",code)
+    else:
+        generate_codes(node[0], code +"0")
+        generate_codes(node[1], code +"1")
+
+n = int(input("Enter the number of characters: "))
+characters = []
+frequencies = []
+for i in range(n):
+    ch = input("Enter Character: ")
+    freq = int(input("Enter Frequency: "))
+    characters.append(ch)
+    frequencies.append(freq)
+
+tree = huffman_encoding(characters, frequencies)
+print("Huffman Codes:")
+generate_codes(tree)
+
+
+
+
+
+
+def fractional_knapsack(weights, profits, capacity):
+    items =[]
+    for i in range(len(weights)):  
+        ratio = profits[i]/weights[i]
+        items.append((ratio, weights[i],profits[i]))
+    items.sort(reverse=True) 
+    total_profit = 0
+    for ratio, weight, profit in items:
+        if capacity >= weight:
+            total_profit = total_profit + profit 
+            capacity = capacity - weight
+        else:
+            total_profit = total_profit + (ratio * capacity)
+            break
+    print("Maximum Profit = ",total_profit)
+    print(capacity)
+n = int(input("Enter number of items: "))
+weights = []
+profits = []
+for i in range(n):
+    weights.append(float(input("Enter weight: ")))
+    profits.append(float(input("Enter profit: ")))
+capacity = float(input("Enter capacity of knapsack: "))
+fractional_knapsack(weights, profits, capacity)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def knapsack(weights, profits, capacity):
+    n = len(weights)
+    dp = [[0 for j in range (capacity + 1)]
+          for i in range(n+1)]
+    for i in range(1, n+1):
+        for j in range(capacity + 1):
+            if weights[i-1] <= j:
+                include_item = profits[i-1] + dp[i-1][j-weights[i-1]]
+                exclude_item = dp[i-1][j]
+                dp [i][j] = max(include_item, exclude_item)
+            else:
+                dp[i][j] = dp[i-1][j]
+    print("Maximum Profit:", dp[n][capacity])
+    print("Selected Items:")
+    j = capacity
+    for i in range(n, 0, -1):
+        if dp[i][j] != dp[i-1][j]:
+            print("Item" , i)
+            j = j - weights[i-1]
+
+n = int(input("Enter Number Of Items: "))
+weights = []
+profits = []
+for i in range(n):
+    weights.append(int(input("Enter weight: ")))
+    profits.append(int(input("Enter profit: ")))
+capacity = int(input("Enter Knapsack Capacity: "))
+knapsack(weights, profits, capacity)
+
+
+
+
+
+
+
+
+
+
+
+
+
+def solve(board, row, n):
+    if row == n:
+        return True
+    for col in range(n):
+        safe = True
+        for i in range(row):
+            if board[i][col] == 1:
+                safe = False
+            if board[i][col] == 1:
+                pass
+
+        for i in range (row):
+            for j in range(n):
+                if board[i][j] == 1:
+                    if abs (row-i) == abs (col-j):
+                        safe = False
+
+        if safe:
+            board[row][col] = 1
+            if solve(board, row+1, n):
+                return True
+            board[row][col] = 0
+    return False
+
+n = int(input("enter the no of queens = "))
+board = [[0 for j in range(n)] for i in range(n)]
+first = int(input(f"Enter 1st Queen Column (0 to {n}): "))
+if first < 0 or first >= 4:
+    print("Invalid column")
+else:
+    board[0][first] = 1
+    if solve(board, 1, n):
+        print("Final N-Queens Matrix: ")
+        for row in board:
+            print(row)
+    else:
+        print("Solution does not exist")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
